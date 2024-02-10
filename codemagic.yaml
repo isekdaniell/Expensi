@@ -24,7 +24,7 @@ workflows:
                 ./gradlew clean
                 ./gradlew assembleRelease
                 #./gradlew bundleRelease
-             artifacts:
+         artifacts:
              - android/app/build/outputs/**/**/*.apk
              - android/app/build/outputs/**/*.aab
              - android/app/build/outputs/**/**/*.aab
