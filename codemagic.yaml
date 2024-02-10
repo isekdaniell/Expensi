@@ -3,10 +3,6 @@
 workflows:
     react-native:
         name: React Native App
-        environment:
-            node: latest
-            xcode: 14.1
-            cocoapods: default
         scripts:
             - npm install
             - |
