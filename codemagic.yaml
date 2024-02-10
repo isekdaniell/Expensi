@@ -1,0 +1,37 @@
+# Check out https://docs.codemagic.io/getting-started/building-a-react-native-app/ for more information
+# Please review and update values in curly braces
+workflows:
+    react-native:
+        name: React Native App
+        environment:
+            node: latest
+            xcode: 14.1
+            cocoapods: default
+        scripts:
+            - npm install
+            - |
+                # Replace String
+                cd node_modules/react-native/third-party-podspecs
+                sed -i '' 's%https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2%https://sourceforge.net/projects/boost/files/boost/1.76.0/boost_1_76_0.tar.bz2%g' boost.podspec
+            #- npx jetify
+            - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/android/local.properties"
+            - |
+                # build Android
+                cd android
+                chmod +x gradlew
+                #./gradlew assembleDebug
+            #- npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+            - |
+                # run Android
+                cd android
+                chmod +x gradlew
+                ./gradlew clean
+                ./gradlew assembleRelease
+                #./gradlew bundleRelease
+             artifacts:
+             - android/app/build/outputs/**/**/*.apk
+             - android/app/build/outputs/**/*.aab
+             - android/app/build/outputs/**/**/*.aab
+             - ios/build/ios/ipa/*.ipa
+             #- $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+             #- $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
